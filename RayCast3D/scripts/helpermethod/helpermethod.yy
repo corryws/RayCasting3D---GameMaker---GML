@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"helpermethod",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"helpermethod",
+  "parent":{
+    "name":"SCRIPT",
+    "path":"folders/SCRIPT.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

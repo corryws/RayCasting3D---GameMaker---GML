@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Leveling",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Leveling",
+  "parent":{
+    "name":"SCRIPT",
+    "path":"folders/SCRIPT.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -15,7 +15,7 @@ function is_wall(map_x, map_y)
 function get_wall_sprite(map_x, map_y) {
     // Se siamo fuori mappa, muro di bordo
     if (map_x < 0 || map_x >= map_width || map_y < 0 || map_y >= map_height) {
-        return spr_wall1;
+        return spr_invisible;
     }
     
     var tile_id = global.map[map_y][map_x];
@@ -43,23 +43,21 @@ function check_playerposition(player, sw, sh)
 {
     var grid_x = floor(player.px / 64);
     var grid_y = floor(player.py / 64);
-
-    //if(grid_x > 3 && grid_y > 3)
-    //{
-    //    draw_gradient_scene2(sw, sh, c_purple, c_olive, c_teal, c_olive);
-		
-	//	//trasformo tutti gli 1 della mappa in 3 global.map[][];
-	//	ChangeToA(4, 1); // tutti gli alberi diventano muri
-    //}
-    //else
-    //{
-    //    draw_gradient_scene2( sw, sh, #2F42F4, #2F7CF4, #FADBAD, #FADBAD);
-		
-	//	//trasformo tutti i 3 della mappa in 1 global.map[][];
-	//	ChangeToA(1, 4); //tutti i muri diventano alberi
-    //}
 	
-	draw_gradient_scene2( sw, sh, #2F42F4, #2F7CF4, #FADBAD, #FADBAD);
+	var map_index = global.world_grid[global.world_j][global.world_i]; 
+	
+	show_debug_message("map_index " + string(map_index));
+	
+	if(map_index == 1)
+	{
+		draw_gradient_scene2(sw, sh, c_purple, c_olive, c_teal, c_olive);
+		ChangeToA(4, 1);
+	}else
+	{
+		draw_gradient_scene2( sw, sh, #2F42F4, #2F7CF4, #FADBAD, #FADBAD);
+		ChangeToA(1, 4);
+	}
+	
 	check_map_transition(player);
 }
 
@@ -98,6 +96,8 @@ function check_map_transition(player)
     var changed = false;
     var new_i = global.world_i;
     var new_j = global.world_j;
+	
+	show_debug_message(string(grid_y) + " " + string(global.world_j));
 
     // USCITA NORD (y <= 0) → vai SU nella world_grid (j--)
     if (grid_y <= 0 && global.world_j > 0) {

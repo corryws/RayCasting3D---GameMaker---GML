@@ -1,8 +1,8 @@
-px = 128;
-py = 128;
+px = 8*64;//128;
+py = 3*64//128;
 
 //direzione in gradi (0 = destra, 90 su, 180 sinistra,360 giù)
-direction_angle = 0;
+direction_angle = 270;
 
 fov = 90;//FOV FIELD OF VIEW - CAMPO VISIVO
 

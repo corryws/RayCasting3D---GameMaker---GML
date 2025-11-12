@@ -2,6 +2,9 @@
 var move_x = 0;
 var move_y = 0;
 
+// METTI QUESTA RIGA COME PRIMISSIMA COSA nello Step Event
+if (global.battle_active) exit;
+
 if(keyboard_check(ord("W")))
 {
 	move_x = lengthdir_x(move_speed, direction_angle);

@@ -21,7 +21,7 @@ function ManageStep(_px, _py)
     if (global.battle_active) return;
     
     if(global.step <= 0) {
-        StartBattle(); // Avvia battaglia
+        //StartBattle(); // Avvia battaglia
         return;
     }
 	

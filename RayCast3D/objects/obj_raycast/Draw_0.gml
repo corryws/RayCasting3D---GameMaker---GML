@@ -11,15 +11,12 @@ var num_rays = screen_width;
 //refresh ad ogni frame
 draw_clear(c_black);
 
-// ===== DISEGNA SOFFITTO E PAVIMENTO =====
-
 check_playerposition(player, room_width, room_height);
 
 // =========================================
 
 // All'inizio del Draw Event, PRIMA del for loop dei raggi
 var z_buffer = array_create(screen_width, 999999);
-
 
 //per ogni colonna dello schermo applicherò L'ALGORITMO DDA
 for(var i = 0; i < num_rays; i++)
@@ -139,7 +136,7 @@ for(var i = 0; i < num_rays; i++)
 	if(draw_end >= screen_height) draw_end = screen_height - 1;
 	
 	// Scurisci un lato per dare profondità
-	var wall_color = (side == 1) ? c_white : c_gray;
+	var wall_color = c_white;//(side == 1) ? c_white : c_gray;
 	
 	// Disegna la colonna della texture
 	draw_sprite_part_ext(

@@ -27,7 +27,7 @@ global.map_0 = [
     [1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1],
     [1,0,1,1,1,1,0,0,0,0,0,0,0,0,1,1],
     [1,0,1,1,1,1,1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [1,0,103,0,0,0,0,103,103,103,103,0,0,0,0,0],
     [1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1],
     [1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1],
     [1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1],
@@ -86,10 +86,10 @@ global.map = global.map_0;
 // mappa dei muri -> sprite
 global.wall_sprites = [
     noone,       // 0 = vuoto
-    spr_wall1,   // 1 = muro base
+    spr_ground,   // 1 = muro base
     spr_wall2,    // 2 = altro tipo di muro
 	spr_door,	 // 3 = door
-	spr_tree //4 = albero
+	spr_grass //4 = albero
 ];
 
 // Oggetti sprite/billboard (100+)
@@ -97,7 +97,8 @@ global.wall_sprites = [
 global.object_sprites = [
     spr_key,     // 100 = chiave
     spr_potion,     // 101 = pozione (usa spr_key per ora)
-    spr_key      // 102 = nemico
+    spr_key,      // 102 = nemico
+	spr_grass //103 - grass
 ];
 
 // AGGIUNGI QUESTO ARRAY! <--- IMPORTANTE

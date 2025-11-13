@@ -30,7 +30,7 @@ function get_wall_sprite(map_x, map_y) {
 
 function get_object_sprite(tile_id) {
     var index = tile_id - 100;
-    
+    show_debug_message("INDEX SPRITE :  " + string(index));
     if (index >= 0 && index < array_length(global.object_sprites)) {
         return global.object_sprites[index];
     }
@@ -47,16 +47,17 @@ function check_playerposition(player, sw, sh)
 	var map_index = global.world_grid[global.world_j][global.world_i]; 
 	
 	show_debug_message("map_index " + string(map_index));
-	
-	if(map_index == 1)
-	{
-		draw_gradient_scene2(sw, sh, c_purple, c_olive, c_teal, c_olive);
-		ChangeToA(4, 1);
-	}else
-	{
-		draw_gradient_scene2( sw, sh, #2F42F4, #2F7CF4, #FADBAD, #FADBAD);
-		ChangeToA(1, 4);
-	}
+	draw_gradient_scene2( sw, sh, #2F42F4, #2F7CF4, #67A028, #67A028);
+
+	//if(map_index == 1)
+	//{
+	//	//draw_gradient_scene2(sw, sh, c_purple, c_olive, c_teal, c_olive);
+	//	//ChangeToA(4, 1);
+	//}else
+	//{
+		
+	//	//ChangeToA(1, 4);
+	//}
 	
 	check_map_transition(player);
 }
@@ -284,6 +285,8 @@ function draw_gradient_scene2(sw, sh, sky_top, sky_bottom, ground_top, ground_bo
 
     draw_primitive_end();
 }
+
+
 
 
 

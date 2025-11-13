@@ -19,10 +19,32 @@ var box_w = 600;
 var box_h = 300;
 
 // Bordo box battaglia
+//draw_set_color(c_white);
+//draw_rectangle(box_x - box_w/2 - 2, box_y - box_h/2 - 2, box_x + box_w/2 + 2, box_y + box_h/2 + 2, false);
+//draw_set_color(c_black);
+//draw_rectangle(box_x - box_w/2, box_y - box_h/2, box_x + box_w/2, box_y + box_h/2, false);
+// Bordo box battaglia
 draw_set_color(c_white);
-draw_rectangle(box_x - box_w/2 - 2, box_y - box_h/2 - 2, box_x + box_w/2 + 2, box_y + box_h/2 + 2, false);
-draw_set_color(c_black);
-draw_rectangle(box_x - box_w/2, box_y - box_h/2, box_x + box_w/2, box_y + box_h/2, false);
+//draw_rectangle(box_x - box_w/2 - 2, box_y - box_h/2 - 2, box_x + box_w/2 + 2, box_y + box_h/2 + 2, false);
+
+// SFONDO A SCACCHIERA RETRO
+var tile_size = 32;
+for (var xx = 0; xx < box_w; xx += tile_size) {
+    for (var yy = 0; yy < box_h; yy += tile_size) {
+        var col = ((xx / tile_size) + (yy / tile_size)) mod 2 == 0 
+    ? make_color_rgb(139, 172, 15)   // Verde chiaro
+    : make_color_rgb(48, 98, 48);    // Verde scuro
+        draw_set_color(col);
+        draw_rectangle(
+            box_x - box_w/2 + xx, 
+            box_y - box_h/2 + yy,
+            box_x - box_w/2 + xx + tile_size, 
+            box_y - box_h/2 + yy + tile_size, 
+            false
+        );
+    }
+}
+
 
 // Disegna nemico
 if (global.battle_enemy != noone && sprite_exists(global.battle_enemy.sprite)) {

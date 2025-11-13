@@ -33,6 +33,7 @@
     {"id":{"name":"BattleSystem","path":"scripts/BattleSystem/BattleSystem.yy",},},
     {"id":{"name":"helpermethod","path":"scripts/helpermethod/helpermethod.yy",},},
     {"id":{"name":"Leveling","path":"scripts/Leveling/Leveling.yy",},},
+    {"id":{"name":"spr_charizard","path":"sprites/spr_charizard/spr_charizard.yy",},},
     {"id":{"name":"spr_door","path":"sprites/spr_door/spr_door.yy",},},
     {"id":{"name":"spr_invisible","path":"sprites/spr_invisible/spr_invisible.yy",},},
     {"id":{"name":"spr_key","path":"sprites/spr_key/spr_key.yy",},},

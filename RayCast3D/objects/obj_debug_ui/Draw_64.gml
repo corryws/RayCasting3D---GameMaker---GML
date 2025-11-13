@@ -1,8 +1,14 @@
 //riferimento del player
 var player = instance_find(obj_player,0);
 if(player == noone) exit;
+
+
+
 // Controlla se la mappa esiste
 if (!variable_global_exists("map")) exit;
+
+// Non disegnare il GUI normale durante la battaglia
+if (global.battle_active) exit;
 
 // === MINIMAP (SPOSTATA IN ALTO A DESTRA) ===
 var minimap_scale = 5;

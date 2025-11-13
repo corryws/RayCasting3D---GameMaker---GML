@@ -1,89 +1,173 @@
 if (!global.battle_active) exit;
 
-var cam_w = camera_get_view_width(view_camera[0]);
-var cam_h = camera_get_view_height(view_camera[0]);
+// Usa le dimensioni della GUI (non della camera!)
+var gui_w = display_get_gui_width();
+var gui_h = display_get_gui_height();
+
+show_debug_message("Battle State: " + string(global.battle_state) + " | Timer: " + string(global.battle_message_timer));
 
 // Sfondo nero semi-trasparente
-draw_set_alpha(0.8);
+draw_set_alpha(0.9);
 draw_set_color(c_black);
-draw_rectangle(0, 0, cam_w, cam_h, false);
+draw_rectangle(0, 0, gui_w, gui_h, false);
 draw_set_alpha(1);
 
 // Box battaglia principale
-var box_x = cam_w / 2;
-var box_y = cam_h * 0.3;
-var box_w = cam_w * 0.8;
-var box_h = cam_h * 0.5;
+var box_x = gui_w / 2;
+var box_y = gui_h * 0.35;
+var box_w = 600;
+var box_h = 300;
 
-// Disegna bordo esterno
+// Bordo box battaglia
 draw_set_color(c_white);
-draw_rectangle(box_x - box_w/2, box_y - box_h/2, box_x + box_w/2, box_y + box_h/2, false);
+draw_rectangle(box_x - box_w/2 - 2, box_y - box_h/2 - 2, box_x + box_w/2 + 2, box_y + box_h/2 + 2, false);
 draw_set_color(c_black);
-draw_rectangle(box_x - box_w/2 + 4, box_y - box_h/2 + 4, box_x + box_w/2 - 4, box_y + box_h/2 - 4, false);
+draw_rectangle(box_x - box_w/2, box_y - box_h/2, box_x + box_w/2, box_y + box_h/2, false);
 
 // Disegna nemico
 if (global.battle_enemy != noone && sprite_exists(global.battle_enemy.sprite)) {
-    draw_sprite(global.battle_enemy.sprite, 0, box_x, box_y - box_h/4);
+    draw_sprite_ext(
+        global.battle_enemy.sprite, 
+        0, 
+        box_x, 
+        box_y - 20,
+        2, 2,
+        0, 
+        c_white, 
+        1
+    );
 }
 
 // Nome nemico
-draw_set_color(c_white);
+draw_set_color(c_yellow);
 draw_set_halign(fa_center);
 draw_set_valign(fa_top);
-draw_text(box_x, box_y - box_h/2 + 20, global.battle_enemy.name);
+draw_text(box_x, box_y - box_h/2 + 15, global.battle_enemy.name);
 
 // HP nemico
-var enemy_hp_text = "HP: " + string(global.battle_enemy.hp) + "/" + string(global.battle_enemy.hp_max);
-draw_text(box_x, box_y - box_h/2 + 40, enemy_hp_text);
+var enemy_bar_w = 150;
+var enemy_bar_h = 15;
+var enemy_bar_x = box_x - enemy_bar_w/2;
+var enemy_bar_y = box_y - box_h/2 + 40;
+
+draw_set_color(c_maroon);
+draw_rectangle(enemy_bar_x, enemy_bar_y, enemy_bar_x + enemy_bar_w, enemy_bar_y + enemy_bar_h, false);
+
+var enemy_hp_percent = clamp(global.battle_enemy.hp / global.battle_enemy.hp_max, 0, 1);
+draw_set_color(c_red);
+draw_rectangle(enemy_bar_x, enemy_bar_y, enemy_bar_x + (enemy_bar_w * enemy_hp_percent), enemy_bar_y + enemy_bar_h, false);
+
+draw_set_color(c_white);
+draw_rectangle(enemy_bar_x, enemy_bar_y, enemy_bar_x + enemy_bar_w, enemy_bar_y + enemy_bar_h, true);
+
+draw_set_halign(fa_center);
+draw_text(box_x, enemy_bar_y + 2, string(global.battle_enemy.hp) + "/" + string(global.battle_enemy.hp_max));
 
 // Box messaggio
-var msg_box_y = box_y + box_h/2 + 40;
-draw_set_color(c_white);
-draw_rectangle(20, msg_box_y, cam_w - 20, msg_box_y + 60, false);
+var msg_box_y = box_y + box_h/2 + 30;
+var msg_box_h = 50;
+var msg_box_x1 = 30;
+var msg_box_x2 = gui_w - 30;
+
 draw_set_color(c_black);
-draw_rectangle(24, msg_box_y + 4, cam_w - 24, msg_box_y + 56, false);
+draw_set_alpha(0.7);
+draw_rectangle(msg_box_x1, msg_box_y, msg_box_x2, msg_box_y + msg_box_h, false);
+draw_set_alpha(1);
+draw_set_color(c_white);
+draw_rectangle(msg_box_x1, msg_box_y, msg_box_x2, msg_box_y + msg_box_h, true);
 
 draw_set_color(c_white);
 draw_set_halign(fa_left);
 draw_set_valign(fa_middle);
-draw_text(40, msg_box_y + 30, global.battle_message);
+draw_text(45, msg_box_y + msg_box_h/2, global.battle_message);
 
-// Menu comandi
-if (global.battle_state == BattleState.PLAYER_TURN && global.battle_message_timer <= 0) {
-    var menu_x = cam_w - 200;
-    var menu_y = msg_box_y + 80;
+// ============ MENU COMANDI ============
+// MOSTRA SEMPRE SE È PLAYER_TURN (per debug)
+if (global.battle_state == BattleState.PLAYER_TURN) {
+    var menu_x = gui_w - 180;
+    var menu_y = msg_box_y + msg_box_h + 20;
     
-    // Box menu
-    draw_set_color(c_white);
-    draw_rectangle(menu_x - 10, menu_y - 10, menu_x + 180, menu_y + 110, false);
+    // Background menu
     draw_set_color(c_black);
-    draw_rectangle(menu_x - 6, menu_y - 6, menu_x + 176, menu_y + 106, false);
+    draw_set_alpha(0.8);
+    draw_rectangle(menu_x - 15, menu_y - 15, menu_x + 165, menu_y + 115, false);
+    draw_set_alpha(1);
+    draw_set_color(c_yellow);
+    draw_rectangle(menu_x - 15, menu_y - 15, menu_x + 165, menu_y + 115, true);
     
-    // Opzioni
-    var menu_options = ["Combatti", "Magia", "Oggetti", "Fuggi"];
+    // Opzioni menu
+    var menu_options = ["COMBATTI", "MAGIA", "OGGETTI", "FUGGI"];
+    
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    
     for (var i = 0; i < 4; i++) {
-        var col = (i == global.battle_menu_index) ? c_yellow : c_white;
+        var is_selected = (i == global.battle_menu_index);
+        
+        if (is_selected) {
+            draw_set_color(c_yellow);
+            draw_set_alpha(0.3);
+            draw_rectangle(menu_x - 10, menu_y + i * 28 - 2, menu_x + 160, menu_y + i * 28 + 22, false);
+            draw_set_alpha(1);
+        }
+        
+        var col = is_selected ? c_yellow : c_white;
         draw_set_color(col);
-        var arrow = (i == global.battle_menu_index) ? "> " : "  ";
-        draw_text(menu_x, menu_y + i * 25, arrow + menu_options[i]);
+        var arrow = is_selected ? "> " : "  ";
+        draw_text(menu_x, menu_y + i * 28, arrow + menu_options[i]);
     }
 }
 
 // Info player
-var player_info_x = 20;
-var player_info_y = cam_h - 80;
+var player_info_x = 30;
+var player_info_y = gui_h - 100;
 var player = instance_find(obj_player, 0);
 
-draw_set_color(c_white);
-draw_rectangle(player_info_x, player_info_y, player_info_x + 200, player_info_y + 70, false);
 draw_set_color(c_black);
-draw_rectangle(player_info_x + 4, player_info_y + 4, player_info_x + 196, player_info_y + 66, false);
+draw_set_alpha(0.8);
+draw_rectangle(player_info_x - 10, player_info_y - 10, player_info_x + 210, player_info_y + 80, false);
+draw_set_alpha(1);
+draw_set_color(c_white);
+draw_rectangle(player_info_x - 10, player_info_y - 10, player_info_x + 210, player_info_y + 80, true);
+
+// Barra HP
+var p_bar_w = 180;
+var p_bar_h = 15;
+
+draw_set_color(c_maroon);
+draw_rectangle(player_info_x, player_info_y, player_info_x + p_bar_w, player_info_y + p_bar_h, false);
+
+var p_hp_percent = clamp(player.hp / player.max_hp, 0, 1);
+draw_set_color(c_red);
+draw_rectangle(player_info_x, player_info_y, player_info_x + (p_bar_w * p_hp_percent), player_info_y + p_bar_h, false);
 
 draw_set_color(c_white);
+draw_rectangle(player_info_x, player_info_y, player_info_x + p_bar_w, player_info_y + p_bar_h, true);
+
+draw_set_halign(fa_center);
+draw_text(player_info_x + p_bar_w/2, player_info_y + 2, string(floor(player.hp)) + "/" + string(floor(player.max_hp)));
+
+// Barra MP
+var p_mp_y = player_info_y + 20;
+
+draw_set_color(c_navy);
+draw_rectangle(player_info_x, p_mp_y, player_info_x + p_bar_w, p_mp_y + p_bar_h, false);
+
+var p_mp_percent = clamp(player.mp / player.max_mp, 0, 1);
+draw_set_color(c_blue);
+draw_rectangle(player_info_x, p_mp_y, player_info_x + (p_bar_w * p_mp_percent), p_mp_y + p_bar_h, false);
+
+draw_set_color(c_white);
+draw_rectangle(player_info_x, p_mp_y, player_info_x + p_bar_w, p_mp_y + p_bar_h, true);
+
+draw_set_halign(fa_center);
+draw_text(player_info_x + p_bar_w/2, p_mp_y + 2, string(floor(player.mp)) + "/" + string(floor(player.max_mp)));
+
+// Stats
+var stat_y = p_mp_y + 25;
 draw_set_halign(fa_left);
-draw_text(player_info_x + 10, player_info_y + 15, "HP: " + string(player.hp) + "/" + string(player.max_hp));
-draw_text(player_info_x + 10, player_info_y + 35, "MP: " + string(player.mp) + "/" + string(player.max_mp));
-draw_text(player_info_x + 10, player_info_y + 55, "LV: " + string(player.lvl));
+draw_set_color(c_gray);
+draw_text(player_info_x, stat_y, "LVL " + string(player.lvl) + " | ATK " + string(player.atk) + " | DEF " + string(player.def));
 
 // Reset
 draw_set_halign(fa_left);

@@ -1,5 +1,12 @@
+// Timer messaggio
+if (global.battle_message_timer > 0) {
+    global.battle_message_timer--;
+}
+
 // Gestione input durante battaglia
 if (global.battle_active && global.battle_state == BattleState.PLAYER_TURN) {
+    
+    show_debug_message("INPUT ATTIVO - Menu index: " + string(global.battle_menu_index));
     
     // Navigazione menu
     if (keyboard_check_pressed(vk_up)) {
@@ -13,9 +20,9 @@ if (global.battle_active && global.battle_state == BattleState.PLAYER_TURN) {
     
     // Conferma azione
     if (keyboard_check_pressed(ord("E")) || keyboard_check_pressed(vk_enter)) {
+        show_debug_message("AZIONE CONFERMATA: " + string(global.battle_menu_index));
         switch(global.battle_menu_index) {
             case 0: // Combatti
-                global.battle_state = BattleState.ENEMY_TURN;
                 PlayerAttack();
                 break;
             case 1: // Magia
@@ -31,9 +38,4 @@ if (global.battle_active && global.battle_state == BattleState.PLAYER_TURN) {
                 break;
         }
     }
-}
-
-// Timer messaggio
-if (global.battle_message_timer > 0) {
-    global.battle_message_timer--;
 }

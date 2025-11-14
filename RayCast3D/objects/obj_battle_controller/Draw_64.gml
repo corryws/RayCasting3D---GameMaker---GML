@@ -4,7 +4,7 @@ if (!global.battle_active) exit;
 var gui_w = display_get_gui_width();
 var gui_h = display_get_gui_height();
 
-show_debug_message("Battle State: " + string(global.battle_state) + " | Timer: " + string(global.battle_message_timer));
+//show_debug_message("Battle State: " + string(global.battle_state) + " | Timer: " + string(global.battle_message_timer));
 
 // Sfondo nero semi-trasparente
 draw_set_alpha(0.9);

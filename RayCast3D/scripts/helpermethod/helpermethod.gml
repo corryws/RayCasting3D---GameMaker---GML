@@ -30,7 +30,7 @@ function get_wall_sprite(map_x, map_y) {
 
 function get_object_sprite(tile_id) {
     var index = tile_id - 100;
-    show_debug_message("INDEX SPRITE :  " + string(index));
+    //show_debug_message("INDEX SPRITE :  " + string(index));
     if (index >= 0 && index < array_length(global.object_sprites)) {
         return global.object_sprites[index];
     }
@@ -46,7 +46,7 @@ function check_playerposition(player, sw, sh)
 	
 	var map_index = global.world_grid[global.world_j][global.world_i]; 
 	
-	show_debug_message("map_index " + string(map_index));
+	//show_debug_message("map_index " + string(map_index));
 	draw_gradient_scene2( sw, sh, #2F42F4, #2F7CF4, #67A028, #67A028);
 
 	//if(map_index == 1)
@@ -98,7 +98,7 @@ function check_map_transition(player)
     var new_i = global.world_i;
     var new_j = global.world_j;
 	
-	show_debug_message(string(grid_y) + " " + string(global.world_j));
+	//show_debug_message(string(grid_y) + " " + string(global.world_j));
 
     // USCITA NORD (y <= 0) → vai SU nella world_grid (j--)
     if (grid_y <= 0 && global.world_j > 0) {
@@ -135,7 +135,7 @@ function check_map_transition(player)
         global.world_i = new_i;
         global.world_j = new_j;
         
-        show_debug_message(">>> Posizione world_grid: [" + string(new_j) + "][" + string(new_i) + "]");
+        //show_debug_message(">>> Posizione world_grid: [" + string(new_j) + "][" + string(new_i) + "]");
         
         // Carica nuova mappa
         GenerateMap();

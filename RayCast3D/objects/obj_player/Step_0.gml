@@ -51,7 +51,7 @@ if(!is_wall(grid_x,grid_y))
 	px = new_px;
 	py = new_py;
 	
-	//se move_x è 0 non incremento step
+	//solo se calpesto l'erba decremento gli step
 	ManageStep(move_x,move_y);
 }
 

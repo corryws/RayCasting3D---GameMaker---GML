@@ -37,9 +37,9 @@ function create_enemy(_name, _hp, _attack, _defense, _exp, _gold, _sprite) {
 
 // Lista nemici (usa i tuoi sprite)
 global.enemy_list = [
-    create_enemy("Slime", 8, 5, 2, 5, 10, spr_charizard),
-    create_enemy("Skeleton", 15, 8, 4, 10, 20, spr_charizard),
-    create_enemy("Dragon", 30, 15, 8, 50, 100, spr_charizard)
+    create_enemy("Bulbasaur", 8, 5, 2, 5, 10, spr_bulbasaur),
+    create_enemy("Ivysaur", 15, 8, 4, 10, 20, spr_ivysaur),
+    create_enemy("Venusaur", 30, 15, 8, 50, 100, spr_venusaur)
 ];
 
 // Avvia una battaglia casuale - MODIFICATA

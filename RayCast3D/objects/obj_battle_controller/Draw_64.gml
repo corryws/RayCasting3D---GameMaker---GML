@@ -7,7 +7,7 @@ var gui_h = display_get_gui_height();
 //show_debug_message("Battle State: " + string(global.battle_state) + " | Timer: " + string(global.battle_message_timer));
 
 // Sfondo nero semi-trasparente
-draw_set_alpha(0.9);
+draw_set_alpha(0.5);
 draw_set_color(c_black);
 draw_rectangle(0, 0, gui_w, gui_h, false);
 draw_set_alpha(1);
@@ -16,33 +16,25 @@ draw_set_alpha(1);
 var box_x = gui_w / 2;
 var box_y = gui_h * 0.35;
 var box_w = 600;
-var box_h = 300;
+var box_h = 400;
 
-// Bordo box battaglia
-//draw_set_color(c_white);
-//draw_rectangle(box_x - box_w/2 - 2, box_y - box_h/2 - 2, box_x + box_w/2 + 2, box_y + box_h/2 + 2, false);
-//draw_set_color(c_black);
-//draw_rectangle(box_x - box_w/2, box_y - box_h/2, box_x + box_w/2, box_y + box_h/2, false);
 // Bordo box battaglia
 draw_set_color(c_white);
-//draw_rectangle(box_x - box_w/2 - 2, box_y - box_h/2 - 2, box_x + box_w/2 + 2, box_y + box_h/2 + 2, false);
 
-// SFONDO A SCACCHIERA RETRO
-var tile_size = 32;
-for (var xx = 0; xx < box_w; xx += tile_size) {
-    for (var yy = 0; yy < box_h; yy += tile_size) {
-        var col = ((xx / tile_size) + (yy / tile_size)) mod 2 == 0 
-    ? make_color_rgb(139, 172, 15)   // Verde chiaro
-    : make_color_rgb(48, 98, 48);    // Verde scuro
-        draw_set_color(col);
-        draw_rectangle(
-            box_x - box_w/2 + xx, 
-            box_y - box_h/2 + yy,
-            box_x - box_w/2 + xx + tile_size, 
-            box_y - box_h/2 + yy + tile_size, 
-            false
-        );
-    }
+if (sprite_exists(battleground_1)) {
+    // Disegna l'immagine scalata per riempire il box
+    draw_sprite_stretched(
+        battleground_1, 
+        0, 
+        box_x - box_w/2, 
+        box_y - box_h/2, 
+        box_w, 
+        box_h
+    );
+} else {
+    // Fallback: colore solido se l'immagine non esiste
+    draw_set_color(make_color_rgb(48, 98, 48));
+    draw_rectangle(box_x - box_w/2, box_y - box_h/2, box_x + box_w/2, box_y + box_h/2, false);
 }
 
 
@@ -51,9 +43,9 @@ if (global.battle_enemy != noone && sprite_exists(global.battle_enemy.sprite)) {
     draw_sprite_ext(
         global.battle_enemy.sprite, 
         0, 
-        box_x, 
-        box_y - 20,
-        2, 2,
+        box_x-100, 
+        box_y-64,
+        3, 3,
         0, 
         c_white, 
         1
@@ -61,10 +53,10 @@ if (global.battle_enemy != noone && sprite_exists(global.battle_enemy.sprite)) {
 }
 
 // Nome nemico
-draw_set_color(c_yellow);
+draw_set_color(c_white);
 draw_set_halign(fa_center);
 draw_set_valign(fa_top);
-draw_text(box_x, box_y - box_h/2 + 15, global.battle_enemy.name);
+draw_text(box_x, box_y - box_h/2 + 15,string_upper(global.battle_enemy.name));
 
 // HP nemico
 var enemy_bar_w = 150;
@@ -76,14 +68,14 @@ draw_set_color(c_maroon);
 draw_rectangle(enemy_bar_x, enemy_bar_y, enemy_bar_x + enemy_bar_w, enemy_bar_y + enemy_bar_h, false);
 
 var enemy_hp_percent = clamp(global.battle_enemy.hp / global.battle_enemy.hp_max, 0, 1);
-draw_set_color(c_red);
+draw_set_color(c_green);
 draw_rectangle(enemy_bar_x, enemy_bar_y, enemy_bar_x + (enemy_bar_w * enemy_hp_percent), enemy_bar_y + enemy_bar_h, false);
 
 draw_set_color(c_white);
 draw_rectangle(enemy_bar_x, enemy_bar_y, enemy_bar_x + enemy_bar_w, enemy_bar_y + enemy_bar_h, true);
 
 draw_set_halign(fa_center);
-draw_text(box_x, enemy_bar_y + 2, string(global.battle_enemy.hp) + "/" + string(global.battle_enemy.hp_max));
+draw_text(box_x, enemy_bar_y - 4, string(global.battle_enemy.hp) + "/" + string(global.battle_enemy.hp_max));
 
 // Box messaggio
 var msg_box_y = box_y + box_h/2 + 30;
@@ -167,7 +159,7 @@ draw_set_color(c_white);
 draw_rectangle(player_info_x, player_info_y, player_info_x + p_bar_w, player_info_y + p_bar_h, true);
 
 draw_set_halign(fa_center);
-draw_text(player_info_x + p_bar_w/2, player_info_y + 2, string(floor(player.hp)) + "/" + string(floor(player.max_hp)));
+draw_text(player_info_x + p_bar_w/2, player_info_y - 4 , string(floor(player.hp)) + "/" + string(floor(player.max_hp)));
 
 // Barra MP
 var p_mp_y = player_info_y + 20;
@@ -183,7 +175,7 @@ draw_set_color(c_white);
 draw_rectangle(player_info_x, p_mp_y, player_info_x + p_bar_w, p_mp_y + p_bar_h, true);
 
 draw_set_halign(fa_center);
-draw_text(player_info_x + p_bar_w/2, p_mp_y + 2, string(floor(player.mp)) + "/" + string(floor(player.max_mp)));
+draw_text(player_info_x + p_bar_w/2, p_mp_y - 4 , string(floor(player.mp)) + "/" + string(floor(player.max_mp)));
 
 // Stats
 var stat_y = p_mp_y + 25;

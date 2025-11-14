@@ -270,12 +270,35 @@ function draw_gradient_scene2(sw, sh, sky_top, sky_bottom, ground_top, ground_bo
     draw_vertex_color(sw, horizon, sky_bottom, 1);
     draw_vertex_color(0, horizon, sky_bottom, 1);
     draw_primitive_end();
+	
+	// --- NUVOLE ---
+    draw_set_alpha(0.6);
+    draw_set_color(#2F72F4);
+    
+    // Nuvola 1
+    draw_circle(sw * 0.2, horizon * 0.3, 25, false);
+    draw_circle(sw * 0.2 + 20, horizon * 0.3 - 8, 22, false);
+    draw_circle(sw * 0.2 + 40, horizon * 0.3, 28, false);
+    draw_circle(sw * 0.2 + 60, horizon * 0.3 - 5, 20, false);
+    
+    // Nuvola 2
+    draw_circle(sw * 0.6, horizon * 0.5, 30, false);
+    draw_circle(sw * 0.6 + 25, horizon * 0.5 - 10, 25, false);
+    draw_circle(sw * 0.6 + 50, horizon * 0.5, 32, false);
+    
+    // Nuvola 3
+    draw_circle(sw * 0.85, horizon * 0.25, 20, false);
+    draw_circle(sw * 0.85 + 18, horizon * 0.25 - 6, 18, false);
+    draw_circle(sw * 0.85 + 35, horizon * 0.25, 22, false);
+    
+    draw_set_alpha(1);
+	
 
     // --- TERRENO CON "RUMORE" ---
     draw_primitive_begin(pr_trianglefan);
 
     // definisci una variazione per il rumore
-    var noise_strength = 5;
+    var noise_strength = 20;
 
     // vertici con rumore
     draw_vertex_color(0, horizon + random_range(-noise_strength, noise_strength), ground_top, 1);

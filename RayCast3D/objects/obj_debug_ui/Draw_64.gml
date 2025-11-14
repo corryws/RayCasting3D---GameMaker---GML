@@ -3,7 +3,6 @@ var player = instance_find(obj_player,0);
 if(player == noone) exit;
 
 
-
 // Controlla se la mappa esiste
 if (!variable_global_exists("map")) exit;
 
@@ -11,7 +10,7 @@ if (!variable_global_exists("map")) exit;
 if (global.battle_active) exit;
 
 // === MINIMAP (SPOSTATA IN ALTO A DESTRA) ===
-var minimap_scale = 5;
+var minimap_scale = 7;
 var minimap_size = 16 * minimap_scale; // 80 pixel
 var minimap_x = room_width - minimap_size - 10; // 10 pixel dal bordo destro
 var minimap_y = 10;
